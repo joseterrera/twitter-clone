@@ -34,7 +34,11 @@ def add_user_to_g():
     """If we're logged in, add curr user to Flask global."""
 
     if CURR_USER_KEY in session:
+        # print('in app context, before first request context')
+        # print('setting g.user to session curr user key')
         g.user = User.query.get(session[CURR_USER_KEY])
+        # print('g.user should be curr user key, is: {0}'.format(g.user))
+
 
     else:
         g.user = None
@@ -42,8 +46,9 @@ def add_user_to_g():
 
 def do_login(user):
     """Log in user."""
-
+    print('setting curr user key to user.id')
     session[CURR_USER_KEY] = user.id
+    print('session curr user key was set to: {0}'.format(session[CURR_USER_KEY]))
 
 
 def do_logout():
@@ -114,7 +119,7 @@ def logout():
     """Handle logout of user."""
     # IMPLEMENT THIS
     do_logout()
-    flash("You have successfully logged out", success)
+    flash("You have successfully logged out", 'success')
     return redirect("/login")
 
 
@@ -230,6 +235,7 @@ def add_like(message_id):
     if liked_message.user_id == g.user.id:
         return abort(403)
     # we store the currently logged in user likes to a variable user_likes (from the g.user object)
+    print('g.user', g.user)
     user_likes = g.user.likes
 
     # we check if the liked message can be found in the user likes (if it's already liked
@@ -238,6 +244,10 @@ def add_like(message_id):
         # here, we pass all the likes expected the one for the liked_message
         # this will effectively unlike the message (remove it from the logged in user's likes)
         g.user.likes = [like for like in user_likes if like != liked_message]
+        # print('g.user', g.user)
+        # print('g.user.likes', g.user.likes)
+
+
     else:
         # otherwise, if it wasn't liked, then we can actually add it to g.user.likes to make it liked at this moment
         g.user.likes.append(liked_message)
