@@ -6,6 +6,12 @@ python3 -m venv venv
 $ source venv/bin/activate
 ```
 
+### Create the Database
+
+```console
+createdb warbler
+```
+
 ### Install necessary packages
 
 ```console
@@ -36,6 +42,17 @@ pip3 install flask_debugtoolbar
 ```console
 flask run
 ```
+
+### Run Tests
+
+```console
+createdb warbler-test
+python -m unittest test_message_model.py
+FLASK_ENV=production python -m unittest test_message_views.py
+python -m unittest test_user_model.py
+FLASK_ENV=production python -m unittest test_message_views.py
+```
+
 
 ### Explore database
 
